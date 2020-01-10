@@ -1,6 +1,7 @@
 # NCIConnect-IHCS-APITesting
 The quick testing tool based on Qunit js to validate NCI Connect Study API request and response messages. This helps to run automated test cases on API before making changes to the site CRM software application. 
 
+The current working version : https://dbakumar.github.io/NCIConnect-IHCS-API-Testing/
 
 # How to Contribute
 Step 1 : Fork the repo
@@ -27,3 +28,5 @@ Step 2 : Add more test case as below in your test.js file:
           });
 
 Step 3 : Enable Github pages setting on your repo for testing or Make pull request to merge to this master. Happy coding!..
+
+![Test Run Screen](https://github.com/dbakumar/NCIConnect-IHCS-API-Testing/blob/master/2020-01-10_11-23-22_Screen.gif)
