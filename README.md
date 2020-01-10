@@ -27,3 +27,5 @@ Step 2 : Add more test case as below in your test.js file:
           });
 
 Step 3 : Enable Github pages setting on your repo for testing or Make pull request to merge to this master. Happy coding!..
+
+![Test Run Screen](https://github.com/dbakumar/NCIConnect-IHCS-API-Testing/blob/master/2020-01-10_11-23-22_Screen.gif)
