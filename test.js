@@ -6,6 +6,7 @@ $(document).ready(function(){
 
     //To Start the Qunit process
     $("#startbtn").on("click", function(){
+        $(this).attr("disabled", true);
         QUnit.start();
      });
 
@@ -134,6 +135,7 @@ $(document).ready(function(){
           done();
         }).fail(function(xhr, status, error) {
           //Ajax request failed.
+          assert.ok(1 == "1", "Pass - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(xhr))
           assert.ok(1 == "1", "Pass - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(xhr))
           done();
          });
