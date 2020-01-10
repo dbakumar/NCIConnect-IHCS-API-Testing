@@ -29,7 +29,7 @@ $(document).ready(function(){
         }
     });
 
-    QUnit.test( "To send request with in-valid Site Key", function( assert ) {
+    QUnit.test( "To send request with in-valid siteKey", function( assert ) {
         var done = assert.async();
         var settings = {
             "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipantToken",
@@ -41,7 +41,7 @@ $(document).ready(function(){
           
           $.ajax(settings).done(function (data, textStatus, xhr) {
             //Ajax request pass.
-            assert.ok( 1 == "2", "Fail - return success with invalid site key :"+ JSON.stringify(data) );
+            assert.ok( 1 == "2", "Fail - return success with invalid sitekey :"+ JSON.stringify(data) );
             done();
           }).fail(function(xhr, status, error) {
             //Ajax request failed.
@@ -51,7 +51,7 @@ $(document).ready(function(){
 
     });
     
-    QUnit.test( "To send request with valid Site Key", function( assert ) {
+    QUnit.test( "To send request with valid siteKey", function( assert ) {
         var done = assert.async();
         var settings = {
             "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipantToken",
@@ -91,8 +91,112 @@ $(document).ready(function(){
     });
 
     /* End of getParticipantToken module*/
+
+    // Start new module for getParticipants
+    QUnit.module( "getParticipants");
+
+    QUnit.test( "To send request with in-valid siteKey", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=verified",
+        "method": "GET",
+        "timeout": 0,
+          "headers": { "Content-Type": "application/json","Authorization" : "Bearer" + client.siteKey + "234633562345345r34"} ,
+          "data": JSON.stringify({"data":[{"studyId":"-1"},{"studyId":"-2"}]}),
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "2", "Fail - return success with invalid sitekey :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "1", "Pass - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(xhr))
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey and invalid type=*", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=*",
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "2", "Fail - return success with valid siteKey and invalid type=* :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "1", "Pass - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(xhr))
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey - type=verified", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=verified",
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", " success :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey - type=notverified", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=notverified",
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", " success :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey - type=all", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=all",
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", " success :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
  
-    
+
   		
 });
 
