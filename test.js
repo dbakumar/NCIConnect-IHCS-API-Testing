@@ -2,6 +2,7 @@ QUnit.config.autostart = false;
 var client = {"siteKey" : "", "headers" : "" };
 
 $(document).ready(function(){
+ 
     //To Start the Qunit process
     $("#startbtn").on("click", function(){
         QUnit.start();
@@ -40,11 +41,11 @@ $(document).ready(function(){
           
           $.ajax(settings).done(function (data, textStatus, xhr) {
             //Ajax request pass.
-            assert.ok( 1 == "2", "Failed - return success with invalid site key :"+ JSON.stringify(data) );
+            assert.ok( 1 == "2", "Fail - return success with invalid site key :"+ JSON.stringify(data) );
             done();
           }).fail(function(xhr, status, error) {
             //Ajax request failed.
-            assert.ok(xhr.status == "401", "Passed - return HTTP status code 401")
+            assert.ok(xhr.status == "401", "Pass - return HTTP status code 401")
             done();
            });
 
@@ -63,12 +64,27 @@ $(document).ready(function(){
           
           $.ajax(settings).done(function (data, textStatus, xhr) {
             //Ajax request pass.
-            assert.ok( xhr.status == "200", "Passed - return success with valid site key and token:"+ JSON.stringify(data) );
-            assert.ok( 1 == "200", "Passed - return success with valid site key and token:"+ JSON.stringify(data) );
+            assert.ok( xhr.status == "200", "Pass - return success with valid HTTP status code:"+ xhr.status );
+            var messageCount =0;
+            $.each(data.data, function(k, v) {
+              if (v.hasOwnProperty("token") && v["token"].length > 0 &&  v.hasOwnProperty("studyId") && v["studyId"].length ) {
+                //console.log(v["token"] + " :: " + v["studyId"]);
+                messageCount++;
+              } else {
+                assert.ok( 1 == "2", "Failed - token/studyId information not send as response. json object : " + JSON.stringify(data) );
+              }
+
+              if (messageCount == Object.keys(data.data).length) {
+                console.log("message count = " + messageCount + " :: Object count = " + Object.keys(data.data).length);
+                assert.ok( 1 == "1", "Pass - token/studyId information received as response. json object : " + JSON.stringify(data) );
+              }
+               
+            });
+            
             done();
           }).fail(function(xhr, status, error) {
             //Ajax request failed.
-            assert.ok(xhr.status == "200", "Failed - return status code :" + xhr.status + " and message : " + JSON.stringify(xhr.responseJSON));
+            assert.ok(xhr.status == "200", "Fail - return status code :" + xhr.status + " and message : " + JSON.stringify(xhr.responseJSON));
             done();
            });
 
@@ -76,6 +92,7 @@ $(document).ready(function(){
 
     /* End of getParticipantToken module*/
  
+    
   		
 });
 
