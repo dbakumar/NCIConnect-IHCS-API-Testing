@@ -151,7 +151,7 @@ $(document).ready(function(){
           done();
         }).fail(function(xhr, status, error) {
           //Ajax request failed.
-          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
           done();
          });
     });
@@ -171,7 +171,7 @@ $(document).ready(function(){
           done();
         }).fail(function(xhr, status, error) {
           //Ajax request failed.
-          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
           done();
          });
     });
@@ -191,7 +191,7 @@ $(document).ready(function(){
           done();
         }).fail(function(xhr, status, error) {
           //Ajax request failed.
-          assert.ok(xhr.status == "401", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
           done();
          });
     });
