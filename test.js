@@ -1,8 +1,9 @@
 QUnit.config.autostart = false;
-var client = {"siteKey" : "", "headers" : "" };
+QUnit.config.reorder = false;
+var client = {"siteKey" : "", "headers" : "", "data" : "" };
 
 $(document).ready(function(){
- 
+
     //To Start the Qunit process
     $("#startbtn").on("click", function(){
         QUnit.start();
@@ -77,6 +78,8 @@ $(document).ready(function(){
               if (messageCount == Object.keys(data.data).length) {
                 console.log("message count = " + messageCount + " :: Object count = " + Object.keys(data.data).length);
                 assert.ok( 1 == "1", "Pass - token/studyId information received as response. json object : " + JSON.stringify(data) );
+                //Store data information to client object for future test case use
+                client.data = data.data;
               }
                
             });
@@ -187,7 +190,7 @@ $(document).ready(function(){
         
         $.ajax(settings).done(function (data, textStatus, xhr) {
           //Ajax request pass.
-          assert.ok( 1 == "1", " success :"+ JSON.stringify(data) );
+          assert.ok( 1 == "1", "Pass :"+ JSON.stringify(data) );
           done();
         }).fail(function(xhr, status, error) {
           //Ajax request failed.
@@ -196,7 +199,91 @@ $(document).ready(function(){
          });
     });
  
+    /* End of getParticipants module*/
 
-  		
+    // Start new module for identifyParticipant
+    QUnit.module( "identifyParticipant");
+
+    QUnit.test( "To send request with in-valid siteKey", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/identifyParticipant?type=verified&token=23423424",
+        "method": "GET",
+        "timeout": 0,
+          "headers": { "Content-Type": "application/json","Authorization" : "Bearer" + client.siteKey + "234633562345345r34"}  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "2", "Fail - return success with invalid sitekey :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "1", "Pass - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(xhr))
+          done();
+         });
+    });
+
+  	QUnit.test( "To send request with valid siteKey - type=verified", function( assert ) {
+      var done = assert.async();
+      
+      //console.log(JSON.stringify(client.data));
+      if (client.data[0].hasOwnProperty("token") && client.data[0]["token"].length > 0 &&  client.data[0].hasOwnProperty("studyId") && client.data[0]["studyId"].length ) {
+         //token = client.data[0]["token"];
+      } else {
+        assert.ok(1 == "2", "Fail - In sufficient input data for test case, client.data object has : " +  JSON.stringify(client.data));
+        done();
+      }
+      
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/identifyParticipant?type=verified&token=" + client.data[0]["token"],
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", "Pass :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey - type=notverified", function( assert ) {
+      var done = assert.async();
+      
+      //console.log(JSON.stringify(client.data));
+      if (client.data[1].hasOwnProperty("token") && client.data[1]["token"].length > 0 &&  client.data[1].hasOwnProperty("studyId") && client.data[1]["studyId"].length ) {
+         //token = client.data[0]["token"];
+      } else {
+        assert.ok(1 == "2", "Fail - In sufficient input data for test case, client.data object has : " +  JSON.stringify(client.data));
+        done();
+      }
+      
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/identifyParticipant?type=notverified&token=" + client.data[1]["token"],
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", "Pass :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
+
+
+
+
 });
 
