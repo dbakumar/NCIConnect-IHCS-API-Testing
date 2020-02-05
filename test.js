@@ -161,10 +161,30 @@ $(document).ready(function(){
          });
     });
 
-    QUnit.test( "To send request with valid siteKey - type=notverified", function( assert ) {
+    QUnit.test( "To send request with valid siteKey - type=notyetverified", function( assert ) {
       var done = assert.async();
       var settings = {
-        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=notverified",
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=notyetverified",
+        "method": "GET",
+        "timeout": 0,
+        "headers": client.headers  
+        };
+        
+        $.ajax(settings).done(function (data, textStatus, xhr) {
+          //Ajax request pass.
+          assert.ok( 1 == "1", " success :"+ JSON.stringify(data) );
+          done();
+        }).fail(function(xhr, status, error) {
+          //Ajax request failed.
+          assert.ok(1 == "2", "Fail - return HTTP status code : " + xhr.status + " :: " + JSON.stringify(error)  ); 
+          done();
+         });
+    });
+
+    QUnit.test( "To send request with valid siteKey - type=cannotbeverified", function( assert ) {
+      var done = assert.async();
+      var settings = {
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/getParticipants?type=cannotbeverified",
         "method": "GET",
         "timeout": 0,
         "headers": client.headers  
@@ -255,7 +275,7 @@ $(document).ready(function(){
          });
     });
 
-    QUnit.test( "To send request with valid siteKey - type=notverified", function( assert ) {
+    QUnit.test( "To send request with valid siteKey - type=cannotbeverified", function( assert ) {
       var done = assert.async();
       
       //console.log(JSON.stringify(client.data));
@@ -267,7 +287,7 @@ $(document).ready(function(){
       }
       
       var settings = {
-        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/identifyParticipant?type=notverified&token=" + client.data[1]["token"],
+        "url": "https://us-central1-nih-nci-dceg-episphere-dev.cloudfunctions.net/identifyParticipant?type=cannotbeverified&token=" + client.data[1]["token"],
         "method": "GET",
         "timeout": 0,
         "headers": client.headers  
